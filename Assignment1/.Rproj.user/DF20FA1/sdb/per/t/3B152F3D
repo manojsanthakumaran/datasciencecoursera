@@ -1,0 +1,17 @@
+{
+    "contents" : "complete <- function(directory, id = 1:332) {\n    ## 'directory' is a character vector of length 1 indicating\n    ## the location of the CSV files\n  \n    ## 'id' is an integer vector indicating the monitor ID numbers\n    ## to be used\n  \n    ## Return a data frame of the form:\n    ## id nobs\n    ## 1  117\n    ## 2  1041\n    ## ...\n    ## where 'id' is the monitor ID number and 'nobs' is the\n    ## number of complete cases\n    \n    vLen <- length(id)\n    resultData <- matrix(nrow=vLen, ncol=2)\n    colnames(resultData) <- c(\"id\",\"nobs\")\n    for(index in 1:vLen){\n        data <- getFileData(directory,id[index])\n        dSub <- subset(data,!is.na(sulfate) & !is.na(nitrate))\n        #print(dSub)\n        resultData[index,1] <- id[index]\n        resultData[index,2] <- nrow(dSub)\n    }\n    resFrame <- data.frame(resultData)\n    resFrame\n}\ngetFileData <- function(directory,the_id){\n  filePath <- getFilePath(directory,the_id)\n  #print(filePath)\n  fdata <- read.csv(file=filePath,head=TRUE,sep=',')\n  fdata\n}\ngetFilePath <- function(directory,theId){\n  fileNamePrefix <- \"\"\n  if(theId<10){\n    fileNamePrefix <- \"00\"\n  }else if(theId>9 & theId<100){\n    fileNamePrefix <- \"0\"\n  }\n  filePath <- paste(c(directory,\"/\",fileNamePrefix,theId,\".csv\"),collapse='')\n  filePath\n}\n",
+    "created" : 1421572106337.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "693087093",
+    "id" : "3B152F3D",
+    "lastKnownWriteTime" : 1421572578,
+    "path" : "~/DataScience/Course2/Workspace/Assignment1/complete.R",
+    "project_path" : "complete.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

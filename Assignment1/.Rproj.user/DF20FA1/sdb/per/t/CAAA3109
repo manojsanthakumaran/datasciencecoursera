@@ -1,0 +1,17 @@
+{
+    "contents" : "corr <- function(directory, threshold = 0) {\n    ## 'directory' is a character vector of length 1 indicating\n    ## the location of the CSV files\n  \n    ## 'threshold' is a numeric vector of length 1 indicating the\n    ## number of completely observed observations (on all\n    ## variables) required to compute the correlation between\n    ## nitrate and sulfate; the default is 0\n  \n    ## Return a numeric vector of correlations\n\n    dfComplete <- complete(directory)\n    dfThreshold <- subset(dfComplete,nobs>threshold)\n    matchIds <- dfThreshold$id\n    matchIds <- sort(matchIds)\n    idLen <- length(matchIds)\n    xVector <- vector(mode=\"numeric\", length=0)\n    yVector <- vector(mode=\"numeric\", length=0)\n    resultData <- vector(mode=\"numeric\", length=0)\n    if(idLen>0){\n        for(index in 1:idLen){\n            data <- getFileData(directory,matchIds[index])\n            xVector <- append(xVector,data$sulfate)\n            yVector <- append(yVector,data$nitrate)\n            resultData <- append(resultData,round(cor(yVector,xVector,use=\"complete.obs\"),digits=5))\n        }\n    }\n    resultData\n}\n",
+    "created" : 1421572733011.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1219407324",
+    "id" : "CAAA3109",
+    "lastKnownWriteTime" : 1421584967,
+    "path" : "~/DataScience/Course2/Workspace/Assignment1/corr.R",
+    "project_path" : "corr.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

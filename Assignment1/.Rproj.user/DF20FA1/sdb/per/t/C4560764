@@ -1,0 +1,16 @@
+{
+    "contents" : "pollutantmean <- function(directory,pollutant,id = 1:332){\n    ## 'directory' is a character vector of length 1 indicating\n    ## the location of the CSV files\n  \n    ## 'pollutant' is a character vector of length 1 indicating\n    ## the name of the pollutant for which we will calculate the\n    ## mean; either \"sulfate\" or \"nitrate\".\n  \n    ## 'id' is an integer vector indicating the monitor ID numbers\n    ## to be used\n  \n    ## Return the mean of the pollutant across all monitors list\n    ## in the 'id' vector (ignoring NA values)\n    \n    colIndx <- getPollutantColIndex(pollutant)\n    if(colIndx==-1){\n        print(\"invalid pollutant name !!\")\n        return()\n    }\n    \n    vLen <- length(id)\n    resultData <- vector(mode=\"numeric\", length=0)\n    for(index in 1:vLen){\n        data <- getFileData(directory,id[index])\n        resultData <- append(resultData,data[,colIndx])\n    }\n    finalMean <- mean(resultData,na.rm=TRUE)\n    round(finalMean,digits=3)\n}\ngetPollutantColIndex <- function(col){\n    indx <- if(\"sulfate\"==col){\n      2\n    } else if(\"nitrate\"==col){\n      3\n    } else {\n      -1\n    }\n}\ngetFileData <- function(directory,the_id){\n    filePath <- getFilePath(directory,the_id)\n    #print(filePath)\n    fdata <- read.csv(file=filePath,head=TRUE,sep=',')\n    fdata\n}\ngetFilePath <- function(directory,theId){\n    fileNamePrefix <- \"\"\n    if(theId<10){\n      fileNamePrefix <- \"00\"\n    }else if(theId>9 & theId<100){\n      fileNamePrefix <- \"0\"\n    }\n    filePath <- paste(c(directory,\"/\",fileNamePrefix,theId,\".csv\"),collapse='')\n    filePath\n}\n",
+    "created" : 1421568508314.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1595987001",
+    "id" : "C4560764",
+    "lastKnownWriteTime" : 1421579164,
+    "path" : "~/DataScience/Course2/Workspace/Assignment1/pollutantmean.R",
+    "project_path" : "pollutantmean.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
