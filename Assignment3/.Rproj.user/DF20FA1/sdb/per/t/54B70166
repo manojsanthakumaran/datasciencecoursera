@@ -1,0 +1,17 @@
+{
+    "contents" : "## Finding the best hospital in a state\n## This function accept two arguments:\n## 1. Two character code of the state\n## 2. A outcome, like \"heat attack\"\n## The response will be a character vector with the name of the hospital\n##   that has the best (lowest) mortality rate for the specified outcome.\n\nbest <- function(state, outcome){\n    ## Read outcome data\n    data <- read.csv(\"outcome-of-care-measures.csv\", colClasses=\"character\")\n    ## Check that state is valid\n    if(isValidState(data,state)==FALSE){\n        stop(\"invalid state\")\n    }\n    ## Check that outcome is valid\n    if(isValidOutcome(outcome)==FALSE){\n        stop(\"invalid outcome\")\n    }\n    ## Returns hospital name in that state with the given rank\n    ## 30-day death rate\n    stateData <- subset(data, data$State == state)\n    index <- getInterestedColumnIndex(outcome)\n    suppressWarnings(stateData[,index] <- as.numeric(stateData[,index]))\n    suppressWarnings(stateData[which.min(stateData[,index]),2])\n}\n\n## Check whether an input state code is valid or not\nisValidState = function(data, state){\n    asubset <- subset(data, data$State == state)\n    isValid <- TRUE\n    if(nrow(asubset) == 0){\n        isValid <- FALSE\n    }\n    isValid\n}\n\n## Check whether an input outcome is valid or not\nisValidOutcome <- function(outcome){\n    allOutcomes <- c(\"heart attack\",\"heart failure\",\"pneumonia\")\n    isValid <- TRUE\n    if(!any(allOutcomes==outcome)){\n        isValid <- FALSE\n    }\n    isValid\n}\n\n## Get the index of column of interested outcomes from data frame\ngetInterestedColumnIndex <- function(outcome){\n    index <- 0\n    if(outcome==\"heart attack\"){\n        index <- 11\n    } else if (outcome==\"heart failure\"){\n        index <- 17\n    } else if(outcome==\"pneumonia\"){\n        index <- 23\n    }\n    index\n}\n",
+    "created" : 1422776770840.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "52386971",
+    "id" : "54B70166",
+    "lastKnownWriteTime" : 1422781244,
+    "path" : "~/DataScience/Course2/Workspace/Assignment3/best.R",
+    "project_path" : "best.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

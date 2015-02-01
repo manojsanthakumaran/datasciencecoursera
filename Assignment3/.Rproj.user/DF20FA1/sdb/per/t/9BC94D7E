@@ -1,0 +1,17 @@
+{
+    "contents" : "## Get the ranks of hospital in a state\n## This function accept three arguments\n## 1. The two character state code\n## 2. The outcome value like heart attack\n## 3. The rank of hospital to get retrieved.\n## The default value of rank will be \"best\".\n## And the rank accept values like \"best\",1,2,..,\"worst\"\n## Return the name of hospital satisfying the rank\n\nrankhospital <- function(state, outcome, num=\"best\"){\n    ## Read column data\n    data <- read.csv(\"outcome-of-care-measures.csv\", colClasses=\"character\")\n    ## Check that state value is valid\n    if(isValidState(data,state)==FALSE){\n        stop(\"invalid state\")\n    }\n    ## Check that outcome is valid\n    if(isValidOutcome(outcome)==FALSE){\n        stop(\"invalid outcome\")\n    }\n    ## Return the hospital name in the state with the given rank\n    ## for 30-day death rate\n    stateData <- subset(data, data$State == state)\n    index <- getInterestedColumnIndex(outcome)\n    suppressWarnings(stateData[,index] <- as.numeric(stateData[,index]))\n    sortedOrder <- order(stateData[,index],stateData[,2])\n    sortedStateData <- stateData[sortedOrder,]\n    rcnt <- nrow(sortedStateData)\n    result <- NULL\n    if(rcnt==0){\n        result <- NA\n    }else if(num==\"best\"){\n        result <- sortedStateData[1,]$Hospital.Name\n    }else if(num==\"worst\"){\n        result <- sortedStateData[rcnt,]$Hospital.Name\n    }else if(num>rcnt){\n        result <- NA\n    }else{\n        result <- sortedStateData[num,]$Hospital.Name\n    }\n    result\n}\n\n## Check whether an input state code is valid or not\nisValidState = function(data, state){\n    asubset <- subset(data, data$State == state)\n    isValid <- TRUE\n    if(nrow(asubset) == 0){\n        isValid <- FALSE\n    }\n    isValid\n}\n\n## Check whether an input outcome is valid or not\nisValidOutcome <- function(outcome){\n    allOutcomes <- c(\"heart attack\",\"heart failure\",\"pneumonia\")\n    isValid <- TRUE\n    if(!any(allOutcomes==outcome)){\n        isValid <- FALSE\n    }\n    isValid\n}\n\n## Get the index of column of interested outcomes from data frame\ngetInterestedColumnIndex <- function(outcome){\n    index <- 0\n    if(outcome==\"heart attack\"){\n        index <- 11\n    } else if (outcome==\"heart failure\"){\n        index <- 17\n    } else if(outcome==\"pneumonia\"){\n        index <- 23\n    }\n    index\n}\n",
+    "created" : 1422781149298.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "991096165",
+    "id" : "9BC94D7E",
+    "lastKnownWriteTime" : 1422783783,
+    "path" : "~/DataScience/Course2/Workspace/Assignment3/rankhospital.R",
+    "project_path" : "rankhospital.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
